@@ -67,13 +67,32 @@ def addDependencia():
 	if len(dfImplicante.get().strip()) == 0 or len(dfImplicado.get().strip()) == 0:
 		messagebox.showerror("Mensaje de Error", "Debe ingresar el implicante y el implicado\npara poder agregar la Dependencia Funcional")
 		return
+    
+	if dfImplicante.get().strip() in dfImplicado.get().strip():
+		messagebox.showerror("Mensaje de Error", "Solo se permite el ingreso de dependencias \nQue no cumplan el axioma de reflexibidad")
+		return
+    
+	df1 = dfImplicante.get().upper()
+	df2 = dfImplicado.get().upper()
+	df11 = df1.replace(",","")
+	df22 = df2.replace(",","")
 
-	df = DF(utils.trimData(dfImplicante.get()), utils.trimData(dfImplicado.get()))
+	for i in range(len(df11)):
+		for j in range(len(df22)):
+			if df11[i] == df22[j]:
+			   messagebox.showerror("Mensaje de Error", "Solo se permite el ingreso de dependencias \nQue no cumplan el axioma de reflexibidad")
+			   return
+             
+
+	df1 = dfImplicante.get().upper()
+	df2 = dfImplicado.get().upper()
+	#df = DF(utils.trimData(dfImplicante.get()), utils.trimData(dfImplicado.get()))
+	df = DF(utils.trimData(df1), utils.trimData(df2))
 	tableDependencias.insert("", END, text = (",".join(df.implicante) + " -> " + ",".join(df.implicado)))
 	dfImplicante.set("")
 	dfImplicado.set("")
 	listDF.append(df)
-
+   
 
 def cleanDependencias():
 	listDF.clear()
